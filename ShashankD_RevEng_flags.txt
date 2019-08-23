@@ -1,0 +1,26 @@
+(1) : congrats message : "Congrats, you have modified stuff".
+
+ 	What I did :
+ 			Firstly I compiled using gcc and ran the executable formed (a.out)
+ 			I found out that I couldn't set "stuff" variable to 64 through stdin and had to do it in runtime.
+ 			So I checked few tutorials about gdb , and its commands and its uses.
+ 			I found out that gdb -p (pid) will debug a running program with pid.
+ 			so i started the a.out , found its pid through "pgrep -u root a.out"
+ 			and then started gdb attached to that pid simultaneously. I set few breakpoints and set the variable "stuff" to 64 by using the command "set var stuff = 64", and continued with next steps. Finally I got the congrats message.
+
+ (2) : Congrats! Here is second part of the flag : dont_mess
+
+ 	What I did :
+ 			tried to identify the file type just to  be sure that it was a binary file using "file second". Then I tried "strings second" 
+ 		    to find all the strings in the binary. I found the flag there. But I couldn't find a way to execute the binary file even after some research(googling and stack overflow).I got some info and uses about tools like objdump, readelf, ld , hte but couldn't find the reason for not running. So I contacted the mentor of the task and asked for help. He informed me regarding the permission aspect of the file. 
+ 		    So I did some research about the chmod command and its uses. I used "chmod u+x second" to give permission to execute by user. I ran the executable file.
+ 		    Program was exiting for any value of name.So I tried ltrace ./second and even here exited after name entry.I got some info about assembly lang.(I knew very basics from my highschool"). I started "gdb second", used "disass main" to view the assembly code of main().I saw a function please_exit before a puts() function. So I guessed that please_exit was causing the early exit. Did "disass please_exit" and found an exit() call. So I started running with few breakpoints and tried to jump directly to the last puts statement by using "jump *<instruction_address>". Got the flag.
+
+ (3) : Congrats! Here is the last part of the flag : web_club
+
+ 	What I did :
+ 			did "chmod u+x third". Ran the program. Tried few passwords. Didn't work.
+ 			Tried the tool "ltrace ./third". Found that the code was comparing input password with "broooooop" using strcmp. So I entered the correct password and got the flag. 
+ 			Even "strings third" will list the flag message.
+ 			Then I started gdb and saw the assembly code where I could find addresses of "broooooop" string . I could have even skipped strcmp call using 
+ 			jump *<instruction address>  and directly called puts.
